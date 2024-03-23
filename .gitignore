@@ -1,2 +1,6 @@
 foreign/*
 foreign
+*/.vscode/*
+*.o
+*.exe
+*.gch
