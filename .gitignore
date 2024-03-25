@@ -1,6 +1,6 @@
-foreign/*
 foreign
-*/.vscode/*
+*.vscode
 *.o
 *.exe
 *.gch
+build
