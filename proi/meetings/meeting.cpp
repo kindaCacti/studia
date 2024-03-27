@@ -41,6 +41,10 @@ void Meeting::addParticipant(std::string name, std::string surname){
     participants.push_back(Person(name, surname));
 }
 
+void Meeting::addParticipant(Person& per){
+    participants.push_back(per);
+}
+
 void Meeting::removeParticipant(Person personToRemove){
     moveToEndOfParticipants(personToRemove);
 
@@ -114,4 +118,15 @@ std::string Meeting::parseToString(){
 
     out += "\n\n----------\n";
     return out;
+}
+
+int Meeting::participantCount(){
+    return participants.size();
+}
+
+int Meeting::findParticipant(Person p){
+    for(int i = 0; i<participants.size(); i++){
+        if(participants[i].isEqualTo(p)) return i;
+    }
+    return -1;
 }

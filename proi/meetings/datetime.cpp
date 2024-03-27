@@ -41,7 +41,7 @@ void Datetime::setTime(int _year, int _month, int _day, int _hour, int _minute){
         if(_minute < 0 and _minute > 59) throw IncorrectDate("Incorrect minute value, minute should be between 0 and 59");
     }catch (IncorrectDate ind){
         ind.write();
-        return;
+        throw;
     }
     year = _year;
     month = _month;

@@ -31,6 +31,7 @@ class Meeting{
         Datetime getTime();
 
         void addParticipant(std::string, std::string="");
+        void addParticipant(Person& p);
         void removeParticipant(Person);
         std::vector<Person> getParticipants();
 
@@ -41,4 +42,7 @@ class Meeting{
         std::string getMeetingType();
 
         std::string parseToString();
+
+        int participantCount();
+        int findParticipant(Person p);
 };

@@ -3,6 +3,7 @@
 #include "meeting.h"
 #include "person.h"
 #include "datetime.h"
+#include "exceptions.h"
 
 TEST( person_init, person_init )
 {
@@ -69,6 +70,12 @@ TEST( datetime_stringification, datetime_stringification){
     ASSERT_EQ(dt.parseToString(), "10.09.2003 10:10");
 }
 
+TEST( datetime_stringification_no_fill, datetime_stringification_no_fill){
+    Datetime dt;
+    dt.setTime(2003, 10, 10, 10, 10);
+    ASSERT_EQ(dt.parseToString(), "10.10.2003 10:10");
+}
+
 TEST( meeting_init, meeting_init ){
     Meeting mt;
     ASSERT_EQ(mt.getMeetingType(), "unset");
@@ -105,6 +112,21 @@ TEST( meeting_remove_participant, meeting_remove_participant){
     ASSERT_EQ(mt.getParticipants()[2].getSurname(), "Sandler4");
 }
 
+TEST( meeting_remove_non_existant_participant, meeting_remove_non_existant_participant){
+    Meeting mt;
+    mt.addParticipant("Adam", "Sandler");
+    mt.addParticipant("Adam", "Sandler2");
+    mt.addParticipant("Adam", "Sandler3");
+    mt.addParticipant("Adam", "Sandler4");
+    Person pr("Adam", "Sandler5");
+    mt.removeParticipant(pr);
+    ASSERT_EQ(mt.getParticipants().size(), 4);
+    ASSERT_EQ(mt.getParticipants()[0].getSurname(), "Sandler");
+    ASSERT_EQ(mt.getParticipants()[1].getSurname(), "Sandler2");
+    ASSERT_EQ(mt.getParticipants()[2].getSurname(), "Sandler3");
+    ASSERT_EQ(mt.getParticipants()[3].getSurname(), "Sandler4");
+}
+
 TEST( meeting_set_time, meeting_set_time ){
     Meeting mt;
     mt.setTime(100, 2, 2, 2, 2);
@@ -121,8 +143,66 @@ TEST( meeting_set_place, meeting_set_place ){
     ASSERT_EQ(mt.getPlace(), "PW");
 }
 
+TEST( meeting_find_person, meeting_find_person ){
+    Meeting mt;
+    Person pt1("Adam Sandler1");
+    Person pt2("Adam Sandler2");
+    Person pt3("Adam Sandler3");
+    mt.addParticipant(pt1);
+    mt.addParticipant(pt2);
+    ASSERT_EQ(mt.findParticipant(pt1), 0);
+    ASSERT_EQ(mt.findParticipant(pt2), 1);
+    ASSERT_EQ(mt.findParticipant(pt3), -1);
+
+}
+
 TEST( set_meeting_type, set_meeting_type ){
     Meeting mt;
     mt.setMeetingType(2);
     ASSERT_EQ(mt.getMeetingType(), "Client Meeting");
+}
+
+TEST( datetime_exception_test, datetime_exception_test )
+{
+    // this tests _that_ the expected exception is thrown
+    EXPECT_THROW({
+        try
+        {
+            Datetime dt(0,0,0,0,0);
+        }
+        catch( const IncorrectDate& e )
+        {
+            throw;
+        }
+    }, IncorrectDate );
+}
+
+TEST( datetime_exception_test_month, datetime_exception_test_month )
+{
+    // this tests _that_ the expected exception is thrown
+    EXPECT_THROW({
+        try
+        {
+            Datetime dt(0,13,1,0,0);
+        }
+        catch( const IncorrectDate& e )
+        {
+            throw;
+        }
+    }, IncorrectDate );
+}
+
+TEST( datetime_exception_test_day, datetime_exception_test_day )
+{
+    // this tests _that_ the expected exception is thrown
+    EXPECT_THROW({
+        try
+        {
+            Datetime dt(0,10,32,0,0);
+        }
+        catch( const IncorrectDate& e )
+        {
+            throw;
+        }
+    }, IncorrectDate );
 }
