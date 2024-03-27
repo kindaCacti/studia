@@ -1,4 +1,3 @@
-#pragma once
 #include <string>
 #include "person.h"
 
@@ -18,6 +17,14 @@ Person::Person(std::string _fullName){
 
 int Person::getId(){
     return id;
+}
+
+std::string Person::getName(){
+    return name;
+}
+
+std::string Person::getSurname(){
+    return surname;
 }
 
 bool Person::isEqualTo(Person toCompare){

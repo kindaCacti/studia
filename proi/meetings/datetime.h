@@ -20,4 +20,5 @@ class Datetime{
         int getHour();
         int getMinute();
         std::string parseToString();
+        inline bool operator== (Datetime&);
 };

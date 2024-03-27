@@ -12,7 +12,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-set(PROJECT_SOURCES person.h person.cpp datetime.h datetime.cpp meeting.h meeting.cpp)
+set(PROJECT_SOURCES person.h person.cpp datetime.h datetime.cpp meeting.h meeting.cpp exceptions.h)
 
 add_executable(Meetings main.cpp ${PROJECT_SOURCES} )
 

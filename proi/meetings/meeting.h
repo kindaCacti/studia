@@ -5,13 +5,21 @@
 #include "datetime.h"
 #include "person.h"
 
+enum MeetingType{
+    NO_MEETING_TYPE_SET,
+    Board_Meeting,
+    Client_Meeting,
+    Team_Meeting,
+    Information_Meeting
+};
+
 class Meeting{
     static int ids;
     int id;
     Datetime date;
     std::vector<Person> participants;
     std::string place;
-    std::string meetingType;
+    MeetingType meetingType;
 
     void print(std::ostream&, std::string);
 
@@ -22,14 +30,14 @@ class Meeting{
         void setTime(const int, const int, const int, const int, const int);
         Datetime getTime();
 
-        void addParticipant(Person);
-        void removeParticipant(Person, std::ostream&);
+        void addParticipant(std::string, std::string="");
+        void removeParticipant(Person);
         std::vector<Person> getParticipants();
 
         void setPlace(std::string);
         std::string getPlace();
 
-        void setMeetingType(std::string);
+        void setMeetingType(int);
         std::string getMeetingType();
 
         std::string parseToString();

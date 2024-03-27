@@ -1,9 +1,6 @@
-#pragma once
 #include <iostream>
 #include <string>
 #include "meeting.h"
-#include "person.h"
-#include "datetime.h"
 
 int main(int argc, char* argv[]){
     if(argc == 1){
@@ -23,24 +20,20 @@ int main(int argc, char* argv[]){
     int day = std::stoi(argv[3]);
     int hour = std::stoi(argv[4]);
     int minute = std::stoi(argv[5]);
-    std::string meetingType = argv[6];
+    int meetingType = std::stoi(argv[6]);
     
     m.setTime(year, month, day, hour, minute);
-    std::cout<<"hi\n";
     m.setMeetingType(meetingType);
-    std::cout<<"hi\n";
+
     for(int i = 7; i<argc; i+=2){
         if(i + 1 == argc){
-            Person p(argv[i]);
-            m.addParticipant(p);
+            m.addParticipant(argv[i]);
             continue;
         }
         else{
-            Person p(argv[i], argv[i+1]);
-            m.addParticipant(p);
+            m.addParticipant(argv[i], argv[i+1]);
         }
     }
 
-    std::cout<<"hi\n";
     std::cout<<m.parseToString();
 }

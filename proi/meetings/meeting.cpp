@@ -1,4 +1,3 @@
-#pragma once
 #include <vector>
 #include <string>
 #include <iostream>
@@ -11,6 +10,9 @@ int Meeting::ids = 0;
 
 Meeting::Meeting(){
     id = ++ids;
+    meetingType = NO_MEETING_TYPE_SET;
+    date = Datetime();
+    place = "";
 }
 
 void Meeting::print(std::ostream& os, std::string data){
@@ -35,20 +37,16 @@ Datetime Meeting::getTime(){
     return date;
 }
 
-void Meeting::addParticipant(const Person newParticipant){
-    participants.push_back(newParticipant);
+void Meeting::addParticipant(std::string name, std::string surname){
+    participants.push_back(Person(name, surname));
 }
 
-void Meeting::removeParticipant(Person personToRemove, std::ostream& os){
+void Meeting::removeParticipant(Person personToRemove){
     moveToEndOfParticipants(personToRemove);
 
     if(participants.back().isEqualTo(personToRemove)){
         participants.pop_back();
-        print(os, "Successfully removed: " + personToRemove.parseToString());
-        return;
     }
-
-    print(os, "Person: " + personToRemove.parseToString() + " does not exist");
 }
 
 std::vector<Person> Meeting::getParticipants(){
@@ -63,12 +61,40 @@ std::string Meeting::getPlace(){
     return place;
 }
 
-void Meeting::setMeetingType(std::string newMeetingType){
-    meetingType = newMeetingType;
+void Meeting::setMeetingType(int newMeetingType){
+    switch(newMeetingType){
+        case 1:
+            meetingType = Board_Meeting;
+            break;
+        case 2:
+            meetingType = Client_Meeting;
+            break;
+        case 3:
+            meetingType = Team_Meeting;
+            break;
+        case 4:
+            meetingType = Information_Meeting;
+            break;
+        default:
+            meetingType = NO_MEETING_TYPE_SET;
+            break;
+    }
 }
 
 std::string Meeting::getMeetingType(){
-    return meetingType;
+    switch(meetingType){
+        case(NO_MEETING_TYPE_SET):
+            return "unset";
+        case(Board_Meeting):
+            return "Board Meeting";
+        case(Client_Meeting):
+            return "Client Meeting";
+        case(Team_Meeting):
+            return "Team Meeting";
+        case(Information_Meeting):
+            return "Information Meeting";
+    }
+    return "error";
 }
 
 std::string Meeting::parseToString(){
@@ -77,7 +103,7 @@ std::string Meeting::parseToString(){
     out += "\n\nTime:\n";
     out += date.parseToString();
     out += "\n\nMeeting type:\n";
-    out += meetingType;
+    out += getMeetingType();
     out += "\n\nParticipants:\n";
 
     int n = participants.size();

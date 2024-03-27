@@ -11,6 +11,8 @@ class Person{
         Person(std::string, std::string);
         Person(std::string);
         int getId();
+        std::string getName();
+        std::string getSurname();
         bool isEqualTo(Person);
         std::string parseToString();
 };
