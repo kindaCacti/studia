@@ -27,6 +27,7 @@ struct Pixel{
 vector<unsigned char> readData;
 vector<vector<Pixel>> pixels;
 int width = 320;
+int height = 240;
 
 bool checkMarker(int sx, int sy){
     Pixel markerColor(0,0,0);
@@ -64,27 +65,36 @@ bool checkMarker(int sx, int sy){
     
     int wdt = cx - sx;
     bool out = (((wdt == bhgt/2)|(wdt == (bhgt+1)/2))&hasStepDown);
-    if(out){
-        cout<<sx<<"x"<<sy<<":haha "<<wdt<<" : "<<bhgt<<endl;
-    }
+    //if(out){
+    //    cout<<sx<<"x"<<sy<<":haha "<<wdt<<" : "<<bhgt<<endl;
+    //}
     return out;
 }
 
 int main(){
     ifstream fin("example_markers.bmp");
-    unsigned char a;
-    int ns = -1;
-    while(fin>>a){
-        readData.push_back(a);
-    }
+    int siz = 54 + width * height * 3;
+    char* rd = new char[siz];
+    //while(true){
+    //    if(fin.eof()) break;
+    //    fin>>a;
+    //    readData.push_back(a);
+    //}
+    fin.get(rd, siz);
     fin.close();
-    int startingPosition = readData[10] - 2;
+
+    for(int i = 0; i<siz; i++){
+        readData.push_back(rd[i]);
+    }
+    int startingPosition = readData[10];
 
     cout<<startingPosition<<endl;
+    cout<<readData.size()<<endl;
 
     //width 320px, height 240 px,
     int moved = 0;
     for(int i = startingPosition; i<readData.size();){
+        moved = 0;
         pixels.push_back({});
         for(int j = i, k = 0; k<width; j+=3, k++){
             pixels.back().push_back(Pixel(readData[j+2], readData[j+1], readData[j]));
@@ -100,7 +110,6 @@ int main(){
 
 
     cout<<pixels.back()[0].stringify()<<endl;
-
     cout<<pixels.size()<<"x"<<pixels[0].size()<<endl;
 
     for(int i = 0; i<pixels.size(); i++){
