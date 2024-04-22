@@ -8,7 +8,7 @@ using namespace std;
 #define bytes_per_pixel 3
 #define marker_color 0
 
-string path = "./example_markers.bmp";
+string path = "./uwalacz1.bmp";
 char* rde;
 unsigned char* rd;
 int startingPosition;
@@ -80,10 +80,10 @@ bool checkMarker(int sx, int sy){
         current_x++;
         if(current_x >= width) break;
         current_height = lineHeight(current_x, sy);
+        if(current_height == 0) break;
         condition &= isLineNotMarker(current_x, sy-1, sy-1);
         if(!condition) return false;
         if(current_height == last_height) continue;
-        if(current_height == 0) break;
         if(hasStep) return false;
         hasStep = true;
         last_height = current_height;
